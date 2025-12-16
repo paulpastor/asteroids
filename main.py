@@ -1,30 +1,10 @@
 import pygame
 
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from logger import log_state
 from player import Player
-
-
-# Base class for game objects
-class CircleShape(pygame.sprite.Sprite):
-    def __init__(self, x, y, radius):
-        # we will be using this later
-        if hasattr(self, "containers"):
-            super().__init__(self.containers)
-        else:
-            super().__init__()
-
-        self.position = pygame.Vector2(x, y)
-        self.velocity = pygame.Vector2(0, 0)
-        self.radius = radius
-
-    def draw(self, screen):
-        # must override
-        pass
-
-    def update(self, dt):
-        # must override
-        pass
 
 
 def main():
@@ -41,6 +21,13 @@ def main():
 
     Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    asteroids = pygame.sprite.Group()
+    Asteroid.containers = (updatable, drawable, asteroids)
+    asteroid = Asteroid(100, 100, 30)
+
+    AsteroidField.containers = updatable
+    asteroid_field = AsteroidField()
 
     number = 1
     while number > 0:
