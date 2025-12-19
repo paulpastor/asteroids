@@ -28,32 +28,39 @@ def main():
 
     asteroids = pygame.sprite.Group()
     Asteroid.containers = (updatable, drawable, asteroids)
-    asteroid = Asteroid(100, 100, 30)
 
     AsteroidField.containers = updatable
     asteroid_field = AsteroidField()
 
     Shot.containers = (updatable, drawable, shots)
-    shot = Shot(0, 0, 5)
 
-    number = 1
-    while number > 0:
+    while True:
         log_state()
+
+        # 1. Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        screen.fill("black")
+
+        # 2. Update game state
         updatable.update(dt)
+
         for asteroid in asteroids:
             if asteroid.collides_with(player):
                 log_event("player_hit")
                 print("Game Over!")
                 sys.exit()
+
+        # 3. Clear screen
+        screen.fill("black")
+
+        # 4. Draw everything
         for entity in drawable:
             entity.draw(screen)
+
+        # 5. Flip the display
         pygame.display.flip()
-        tick = clock.tick(60)
-        dt = tick / 1000.0
+        dt = clock.tick(60) / 1000
 
 
 if __name__ == "__main__":
